@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum BuildSize {
+  MAJOR
+  MINOR
+}
+
+enum SubmissionStatus {
+  NEW
+  IN_REVIEW
+  APPROVED
+  REJECTED
+  QUEUED
+  DONE
+}
+
+model Submission {
+  id                               String           @id @default(cuid())
+  createdAt                        DateTime         @default(now())
+  clientName                       String           @default("Jennifer Yagos")
+  clientEmail                      String
+  projectName                      String
+  objective                        String
+  desiredLaunchDate                DateTime
+  strategicFinalizationConfirmed   Boolean
+  finalOfferName                   String
+  finalPrice                       String
+  paymentStructure                 String
+  deliverablesIncluded             String
+  bonusesIncluded                  String?
+  refundPolicy                     String
+  pagesRequired                    String
+  otherPageDescription             String?
+  finalPageCopy                    String
+  imagesProvided                   Boolean
+  brandAssetsLink                  String?
+  sequenceType                     String
+  numberOfMessages                 Int
+  messageCopy                      String
+  sendDatesTiming                  String
+  paymentProcessor                 String
+  taggingRules                     String
+  automationTriggers               String
+  buildSize                        BuildSize
+  changePolicyConfirmed            Boolean
+  userAgent                        String?
+  ipAddress                        String?
+  status                           SubmissionStatus @default(NEW)
+  notesInternal                    String?
+
+  @@index([clientEmail])
+  @@index([projectName])
+  @@index([status])
+  @@index([createdAt])
+}
